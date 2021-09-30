@@ -9,12 +9,12 @@ main.yaml call to `run-blender-action`:
         uses: mbalestrini/run-blender-action@master
         with:
           file-to-load: TEMPLATE_SKY130_LIBRARY_CELLS.blend
-          blender-extra-args: -P ./scripts/library_cell_render.py -- -i ./src_files/sky130_fd_sc_hd__mux2_1.json -o ./generated-renders/ -s 1.0
+          blender-extra-args: -P ./scripts/library_cell_render.py -- -i ./src_files/gds_to_render.json -o ./generated-renders/ -s 1.0
 ```
 
 This job executes blender from the command line with the following parameters:
 
-`blender TEMPLATE_SKY130_LIBRARY_CELLS.blend -P ./scripts/library_cell_render.py -- -i ./src_files/sky130_fd_sc_hd__mux2_1.json -o ./generated-renders/ -s 1.0`
+`blender TEMPLATE_SKY130_LIBRARY_CELLS.blend -P ./scripts/library_cell_render.py -- -i ./src_files/gds_to_render.json -o ./generated-renders/ -s 1.0`
 
 After finishing the render the job uploads the files as an artifact to be able to download them from the action:
 ```
