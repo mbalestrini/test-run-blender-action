@@ -20,8 +20,8 @@ jobs:
       - name: Upload render output as artifact
         uses: actions/upload-artifact@v2
         with:
-                name: sky130_fd_sc_hd__mux2_1.jpg
-                path: sky130_fd_sc_hd__mux2_1.jpg
+                name: renderer-files
+                path: ./generated-renders/*.jpg
 
       - name: Commit files
         run: |
