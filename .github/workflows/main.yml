@@ -24,11 +24,11 @@ jobs:
                 path: sky130_fd_sc_hd__mux2_1.jpg
 
       - name: Commit files
-              run: |
-                      git add ./generated-renders/
-                      git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                      git config --local user.name "github-actions[bot]"
-                      git commit -m "Add action rendered files" -a                
+        run: |
+                git add ./generated-renders/
+                git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                git config --local user.name "github-actions[bot]"
+                git commit -m "Add action rendered files" -a                
 
       - name: Push changes
         uses: ad-m/github-push-action@master
