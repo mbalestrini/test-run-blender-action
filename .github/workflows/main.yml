@@ -15,7 +15,7 @@ jobs:
         uses: mbalestrini/run-blender@master
         with:
           file-to-load: TEMPLATE_SKY130_LIBRARY_CELLS.blend
-          blender-extra-args: -P sky130_fd_sc_hd__mux2_1.json -- -i ./src_files/sky130_fd_sc_hd__mux2_1.json -o ./generated-renders/ -s 1.0
+          blender-extra-args: -P ./scripts/library_cell_render.py -- -i ./src_files/sky130_fd_sc_hd__mux2_1.json -o ./generated-renders/ -s 1.0
 
       - name: Upload render output as artifact
         uses: actions/upload-artifact@v2
