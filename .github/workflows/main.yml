@@ -1,0 +1,85 @@
+on: [push]
+
+jobs:
+  render_job:
+    runs-on: ubuntu-latest
+    name: Test render in blender
+    steps:
+      - uses: actions/checkout@v2
+        with:
+                persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+                fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+                
+      - name: Start the blender docker
+        id: blender_docker
+        uses: mbalestrini/run-blender@master
+        with:
+          file-to-load: TEMPLATE_SKY130_LIBRARY_CELLS.blend
+          blender-extra-args: -P sky130_fd_sc_hd__mux2_1.json -- -i ./src_files/sky130_fd_sc_hd__mux2_1.json -o ./generated-renders/ -s 1.0
+
+      - name: Upload render output as artifact
+        uses: actions/upload-artifact@v2
+        with:
+                name: sky130_fd_sc_hd__mux2_1.jpg
+                path: sky130_fd_sc_hd__mux2_1.jpg
+
+      - name: Commit files
+              run: |
+                      git add ./generated-renders/
+                      git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                      git config --local user.name "github-actions[bot]"
+                      git commit -m "Add action rendered files" -a                
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                branch: ${{ github.ref }}
+
+      
+
+  # hello_world_job:
+  #   runs-on: ubuntu-latest
+  #   name: A job to say hello
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #               persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+  #               fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+  #     - name: Hello world action step
+  #       id: hello
+  #       uses: mbalestrini/hello-world-docker-action@v4
+  #       with:
+  #         who-to-greet: 'Maximo'
+
+  #     - name: upload render output
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #               name: output_file.txt
+  #               path: saludo.txt
+
+  #     - name: Append saludo.txt to todos_los_saludos.txt
+  #       run: |
+  #               cat saludo.txt >> todos_los_saludos.txt
+      
+  #     - name: Commit files
+  #       run: |
+  #               git add saludo.txt
+  #               git add todos_los_saludos.txt
+  #               git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  #               git config --local user.name "github-actions[bot]"
+  #               git commit -m "Add changes" -a                
+
+  #     - name: Push changes
+  #       uses: ad-m/github-push-action@master
+  #       with:
+  #               github_token: ${{ secrets.GITHUB_TOKEN }}
+  #               branch: ${{ github.ref }}
+
+  #     # Use the output from the `hello` step
+  #     - name: Get the output time
+  #       run: echo "The time was ${{ steps.hello.outputs.time }}"
+
+  #     - name: Echo contents of the docker generated file
+  #       run: cat $GITHUB_WORKSPACE/saludo.txt
+
